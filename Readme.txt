@@ -8,7 +8,7 @@ cd CMSSW_12_2_1/src
 
 cmsenv
 
-git clone -b 12_X https://github.com/cmkuo/ggAnalysis
+git clone -b 12_X https://github.com/Prasant1993/ggAnalysis
 
 scram b -j8
 
