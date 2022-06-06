@@ -12,10 +12,10 @@ git clone -b 12_X https://github.com/Prasant1993/ggAnalysis
 
 scram b -j8
 
-Interactive run:
+Interactive run in local:
 cd ggAnalysis/ggNtuplizer/test
 
-# set up grid environment.
+# set up grid environment for submit jobs in grid.
 
 voms-proxy-init --voms cms --valid 192:00
 
@@ -27,11 +27,15 @@ For CRAB jobs:
 
 cd ggAnalysis/ggNtuplizer/test
 
-source set_env.sh ## It will ask for grid password.
+source set_env.sh ## It will ask for grid password. Check the crabcheckwrite option.
+
 python CrabSubmit.py ## You can edit this file on your requirement
 
+#################################################################################################################################
 After flat ntuple production, prompt and fake photons are separated by applying logic
 
 cd ggAnalysis/scripts  ## In the file "photonTreeProducer.C", the logic is written, change it according to the need.
+Execute the Makefile
 make
+Run the executable produced written in "run.sh" file
 ./run.sh
