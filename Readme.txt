@@ -29,3 +29,9 @@ cd ggAnalysis/ggNtuplizer/test
 
 source set_env.sh ## It will ask for grid password.
 python CrabSubmit.py ## You can edit this file on your requirement
+
+After flat ntuple production, prompt and fake photons are separated by applying logic
+
+cd ggAnalysis/scripts  ## In the file "photonTreeProducer.C", the logic is written, change it according to the need.
+make
+./run.sh
