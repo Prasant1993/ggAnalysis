@@ -235,8 +235,9 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
     if (genParticlesHandle.isValid()) {
       for (std::vector<reco::GenParticle>::const_iterator ip = genParticlesHandle->begin(); ip != genParticlesHandle->end(); ++ip) {
 	const reco::Candidate *p = (const reco::Candidate*)&(*ip);
-	if ( (p->status()==1) && abs(p->pdgId()) == 22 ) {
-	  if ( ((reco::deltaR(*iPho,*p))<0.1) && ((iPho->pt()/p->pt())<0.2) ) genmatched=1;
+	//if ( (p->status()==1) && abs(p->pdgId()) == 22 )
+	if((ip->fromHardProcessFinalState()) && (ip->isPromptFinalState()) && (p->pdgId()) == 22) {
+	    if ( ((reco::deltaR(*iPho,*p))<0.1) && ((iPho->pt()/p->pt())>0.7) && ((iPho->pt()/p->pt())<1.2) ) genmatched=1;
 	}  
       }
     }
