@@ -29,7 +29,7 @@ cd ggAnalysis/ggNtuplizer/test
 
 source set_env.sh ## It will ask for grid password. Check the crabcheckwrite option.
 
-python CrabSubmit.py ## You can edit this file on your requirement
+crab submit -c CrabSubmit.py ## You can edit this file on your requirement
 
 #################################################################################################################################
 After flat ntuple production, prompt and fake photons are separated by applying logic
