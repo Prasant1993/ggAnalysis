@@ -8,7 +8,6 @@
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
 
 
-
 using namespace std;
 using namespace edm;
 
@@ -43,6 +42,7 @@ vector<float>  phoSigmaIEtaIPhiFull5x5_;
 vector<float>  phoSigmaIPhiIPhiFull5x5_;
 vector<float>  phoE2x2Full5x5_;
 vector<float>  phoE5x5Full5x5_;
+vector<float>  phoS4_;
 vector<float>  phoR9Full5x5_;
 vector<float>  phoPFChIso_;
 vector<float>  phoPFChPVIso_;
@@ -116,6 +116,7 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoSigmaIPhiIPhiFull5x5", &phoSigmaIPhiIPhiFull5x5_);
   tree->Branch("phoE2x2Full5x5",          &phoE2x2Full5x5_);
   tree->Branch("phoE5x5Full5x5",          &phoE5x5Full5x5_);
+  tree->Branch("phoS4",                   &phoS4_);
   tree->Branch("phoR9Full5x5",            &phoR9Full5x5_);
   tree->Branch("phoPFChIso",              &phoPFChIso_);
   tree->Branch("phoPFChPVIso",            &phoPFChPVIso_);
@@ -176,6 +177,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
   phoSigmaIPhiIPhiFull5x5_.clear();
   phoE2x2Full5x5_         .clear();
   phoE5x5Full5x5_         .clear();
+  phoS4_                  .clear();
   phoR9Full5x5_           .clear();
   phoPFChIso_             .clear();
   phoPFChPVIso_           .clear();
@@ -271,6 +273,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
     phoSigmaIPhiIPhiFull5x5_ .push_back(iPho->full5x5_showerShapeVariables().sigmaIphiIphi);
     phoE2x2Full5x5_          .push_back(lazyToolnoZS.e2x2(*((*iPho).superCluster()->seed())));
     phoE5x5Full5x5_          .push_back(iPho->full5x5_e5x5());
+    phoS4_                   .push_back(lazyToolnoZS.e2x2(*((*iPho).superCluster()->seed()))/(iPho->full5x5_e5x5()));
     phoR9Full5x5_            .push_back(iPho->full5x5_r9());    
     phoPFChIso_         .push_back(iPho->chargedHadronIso()); //charged hadron isolation with dxy,dz match to pv
     phoPFChPVIso_       .push_back(iPho->chargedHadronPFPVIso()); //only considers particles assigned to the primary vertex (PV) by particle flow, corresponds to <10_6 chargedHadronIso
