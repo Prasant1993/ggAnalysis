@@ -96,13 +96,15 @@ public :
    vector<int>     *phohasPixelSeed;
    vector<int>     *phoEleVeto;
    vector<float>   *phoR9;
-   vector<float>   *phoHoverE;
+   vector<float>   *phoTowerHoverE;
+   vector<float>   *phoConeHoverE;
    vector<float>   *phoESEffSigmaRR;
    vector<float>   *phoSigmaIEtaIEtaFull5x5;
    vector<float>   *phoSigmaIEtaIPhiFull5x5;
    vector<float>   *phoSigmaIPhiIPhiFull5x5;
    vector<float>   *phoE2x2Full5x5;
    vector<float>   *phoE5x5Full5x5;
+   vector<float>   *phoS4;
    vector<float>   *phoR9Full5x5;
    vector<float>   *phoPFChIso;
    vector<float>   *phoPFChPVIso;
@@ -274,13 +276,15 @@ public :
    TBranch        *b_phohasPixelSeed;   //!
    TBranch        *b_phoEleVeto;   //!
    TBranch        *b_phoR9;   //!
-   TBranch        *b_phoHoverE;   //!
+   TBranch        *b_phoTowerHoverE;   //!
+   TBranch        *b_phoConeHoverE;   //!
    TBranch        *b_phoESEffSigmaRR;   //!
    TBranch        *b_phoSigmaIEtaIEtaFull5x5;   //!
    TBranch        *b_phoSigmaIEtaIPhiFull5x5;   //!
    TBranch        *b_phoSigmaIPhiIPhiFull5x5;   //!
    TBranch        *b_phoE2x2Full5x5;   //!
    TBranch        *b_phoE5x5Full5x5;   //!
+   TBranch        *b_phoS4;   //!
    TBranch        *b_phoR9Full5x5;   //!
    TBranch        *b_phoPFChIso;   //!
    TBranch        *b_phoPFChPVIso;   //!
@@ -514,13 +518,15 @@ void photonTreeProducer::Init(TTree *tree)
    phohasPixelSeed = 0;
    phoEleVeto = 0;
    phoR9 = 0;
-   phoHoverE = 0;
+   phoTowerHoverE = 0;
+   phoConeHoverE = 0;
    phoESEffSigmaRR = 0;
    phoSigmaIEtaIEtaFull5x5 = 0;
    phoSigmaIEtaIPhiFull5x5 = 0;
    phoSigmaIPhiIPhiFull5x5 = 0;
    phoE2x2Full5x5 = 0;
    phoE5x5Full5x5 = 0;
+   phoS4 = 0;
    phoR9Full5x5 = 0;
    phoPFChIso = 0;
    phoPFChPVIso = 0;
@@ -693,13 +699,15 @@ void photonTreeProducer::Init(TTree *tree)
    fChain->SetBranchAddress("phohasPixelSeed", &phohasPixelSeed, &b_phohasPixelSeed);
    fChain->SetBranchAddress("phoEleVeto", &phoEleVeto, &b_phoEleVeto);
    fChain->SetBranchAddress("phoR9", &phoR9, &b_phoR9);
-   fChain->SetBranchAddress("phoHoverE", &phoHoverE, &b_phoHoverE);
+   fChain->SetBranchAddress("phoTowerHoverE", &phoTowerHoverE, &b_phoTowerHoverE);
+   fChain->SetBranchAddress("phoConeHoverE", &phoConeHoverE, &b_phoConeHoverE);
    fChain->SetBranchAddress("phoESEffSigmaRR", &phoESEffSigmaRR, &b_phoESEffSigmaRR);
    fChain->SetBranchAddress("phoSigmaIEtaIEtaFull5x5", &phoSigmaIEtaIEtaFull5x5, &b_phoSigmaIEtaIEtaFull5x5);
    fChain->SetBranchAddress("phoSigmaIEtaIPhiFull5x5", &phoSigmaIEtaIPhiFull5x5, &b_phoSigmaIEtaIPhiFull5x5);
    fChain->SetBranchAddress("phoSigmaIPhiIPhiFull5x5", &phoSigmaIPhiIPhiFull5x5, &b_phoSigmaIPhiIPhiFull5x5);
    fChain->SetBranchAddress("phoE2x2Full5x5", &phoE2x2Full5x5, &b_phoE2x2Full5x5);
    fChain->SetBranchAddress("phoE5x5Full5x5", &phoE5x5Full5x5, &b_phoE5x5Full5x5);
+   fChain->SetBranchAddress("phoS4", &phoS4, &b_phoS4);
    fChain->SetBranchAddress("phoR9Full5x5", &phoR9Full5x5, &b_phoR9Full5x5);
    fChain->SetBranchAddress("phoPFChIso", &phoPFChIso, &b_phoPFChIso);
    fChain->SetBranchAddress("phoPFChPVIso", &phoPFChPVIso, &b_phoPFChPVIso);
