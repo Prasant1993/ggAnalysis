@@ -99,12 +99,14 @@ public :
    vector<float>   *phoTowerHoverE;
    vector<float>   *phoConeHoverE;
    vector<float>   *phoESEffSigmaRR;
+   vector<float>   *phoESEffSigmaRRnoZS;
    vector<float>   *phoSigmaIEtaIEtaFull5x5;
    vector<float>   *phoSigmaIEtaIPhiFull5x5;
    vector<float>   *phoSigmaIPhiIPhiFull5x5;
    vector<float>   *phoE2x2Full5x5;
    vector<float>   *phoE5x5Full5x5;
    vector<float>   *phoS4;
+   vector<float>   *phoS4noZS;
    vector<float>   *phoR9Full5x5;
    vector<float>   *phoPFChIso;
    vector<float>   *phoPFChPVIso;
@@ -114,6 +116,8 @@ public :
    vector<float>   *phoPFChWorstVetoIso;
    vector<float>   *phoEcalPFClusterIso;
    vector<float>   *phoHcalPFClusterIso;
+   vector<float>   *photrkSumPtHollowConeDR03;
+   vector<float>   *photrkSumPtSolidConeDR04;
    /*
    vector<float>   *phoSeedTime;
    vector<float>   *phoSeedEnergy;
@@ -279,12 +283,14 @@ public :
    TBranch        *b_phoTowerHoverE;   //!
    TBranch        *b_phoConeHoverE;   //!
    TBranch        *b_phoESEffSigmaRR;   //!
+   TBranch        *b_phoESEffSigmaRRnoZS;
    TBranch        *b_phoSigmaIEtaIEtaFull5x5;   //!
    TBranch        *b_phoSigmaIEtaIPhiFull5x5;   //!
    TBranch        *b_phoSigmaIPhiIPhiFull5x5;   //!
    TBranch        *b_phoE2x2Full5x5;   //!
    TBranch        *b_phoE5x5Full5x5;   //!
    TBranch        *b_phoS4;   //!
+   TBranch        *b_phoS4noZS;   //!
    TBranch        *b_phoR9Full5x5;   //!
    TBranch        *b_phoPFChIso;   //!
    TBranch        *b_phoPFChPVIso;   //!
@@ -294,7 +300,8 @@ public :
    TBranch        *b_phoPFChWorstVetoIso;   //!
    TBranch        *b_phoEcalPFClusterIso;   //!
    TBranch        *b_phoHcalPFClusterIso;   //!
-  
+   TBranch        *b_photrkSumPtHollowConeDR03;
+   TBranch        *b_photrkSumPtSolidConeDR04;
    /*
    TBranch        *b_phoSeedTime;   //!
    TBranch        *b_phoSeedEnergy;   //!
@@ -521,12 +528,14 @@ void photonTreeProducer::Init(TTree *tree)
    phoTowerHoverE = 0;
    phoConeHoverE = 0;
    phoESEffSigmaRR = 0;
+   phoESEffSigmaRRnoZS = 0;
    phoSigmaIEtaIEtaFull5x5 = 0;
    phoSigmaIEtaIPhiFull5x5 = 0;
    phoSigmaIPhiIPhiFull5x5 = 0;
    phoE2x2Full5x5 = 0;
    phoE5x5Full5x5 = 0;
    phoS4 = 0;
+   phoS4noZS = 0;
    phoR9Full5x5 = 0;
    phoPFChIso = 0;
    phoPFChPVIso = 0;
@@ -536,6 +545,8 @@ void photonTreeProducer::Init(TTree *tree)
    phoPFChWorstVetoIso = 0;
    phoEcalPFClusterIso = 0;
    phoHcalPFClusterIso = 0;
+   photrkSumPtHollowConeDR03 = 0;
+   photrkSumPtSolidConeDR04 = 0;
 
    /* phoSeedTime = 0;
    phoSeedEnergy = 0;
@@ -702,12 +713,14 @@ void photonTreeProducer::Init(TTree *tree)
    fChain->SetBranchAddress("phoTowerHoverE", &phoTowerHoverE, &b_phoTowerHoverE);
    fChain->SetBranchAddress("phoConeHoverE", &phoConeHoverE, &b_phoConeHoverE);
    fChain->SetBranchAddress("phoESEffSigmaRR", &phoESEffSigmaRR, &b_phoESEffSigmaRR);
+   fChain->SetBranchAddress("phoESEffSigmaRRnoZS", &phoESEffSigmaRRnoZS, &b_phoESEffSigmaRRnoZS);
    fChain->SetBranchAddress("phoSigmaIEtaIEtaFull5x5", &phoSigmaIEtaIEtaFull5x5, &b_phoSigmaIEtaIEtaFull5x5);
    fChain->SetBranchAddress("phoSigmaIEtaIPhiFull5x5", &phoSigmaIEtaIPhiFull5x5, &b_phoSigmaIEtaIPhiFull5x5);
    fChain->SetBranchAddress("phoSigmaIPhiIPhiFull5x5", &phoSigmaIPhiIPhiFull5x5, &b_phoSigmaIPhiIPhiFull5x5);
    fChain->SetBranchAddress("phoE2x2Full5x5", &phoE2x2Full5x5, &b_phoE2x2Full5x5);
    fChain->SetBranchAddress("phoE5x5Full5x5", &phoE5x5Full5x5, &b_phoE5x5Full5x5);
    fChain->SetBranchAddress("phoS4", &phoS4, &b_phoS4);
+   fChain->SetBranchAddress("phoS4noZS", &phoS4noZS, &b_phoS4noZS);
    fChain->SetBranchAddress("phoR9Full5x5", &phoR9Full5x5, &b_phoR9Full5x5);
    fChain->SetBranchAddress("phoPFChIso", &phoPFChIso, &b_phoPFChIso);
    fChain->SetBranchAddress("phoPFChPVIso", &phoPFChPVIso, &b_phoPFChPVIso);
@@ -717,6 +730,8 @@ void photonTreeProducer::Init(TTree *tree)
    fChain->SetBranchAddress("phoPFChWorstVetoIso", &phoPFChWorstVetoIso, &b_phoPFChWorstVetoIso);
    fChain->SetBranchAddress("phoEcalPFClusterIso", &phoEcalPFClusterIso, &b_phoEcalPFClusterIso);
    fChain->SetBranchAddress("phoHcalPFClusterIso", &phoHcalPFClusterIso, &b_phoHcalPFClusterIso);
+   fChain->SetBranchAddress("photrkSumPtHollowConeDR03", &photrkSumPtHollowConeDR03, &b_photrkSumPtHollowConeDR03);
+   fChain->SetBranchAddress("photrkSumPtSolidConeDR04", &photrkSumPtSolidConeDR04, &b_photrkSumPtSolidConeDR04);
    
    /*
    fChain->SetBranchAddress("phoSeedTime", &phoSeedTime, &b_phoSeedTime);
@@ -762,6 +777,7 @@ void photonTreeProducer::Init(TTree *tree)
    fChain->SetBranchAddress("elePFPUIso", &elePFPUIso, &b_elePFPUIso);
    fChain->SetBranchAddress("eleR9Full5x5", &eleR9Full5x5, &b_eleR9Full5x5);
    fChain->SetBranchAddress("eleEcalDrivenSeed", &eleEcalDrivenSeed, &b_eleEcalDrivenSeed);
+
 
    /*
    fChain->SetBranchAddress("eleEnergyMatrix5x5", &eleEnergyMatrix5x5, &b_eleEnergyMatrix5x5);

@@ -7,7 +7,6 @@
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
 
-
 using namespace std;
 using namespace edm;
 
@@ -16,7 +15,7 @@ vector<float>  phoE_;
 vector<float>  phoEt_;
 vector<float>  phoEta_;
 vector<float>  phoPhi_;
-vector<int>  pho_genmatched_;
+vector<int>    pho_genmatched_;
 vector<float>  phoSigmaE_;
 vector<float>  phoCalibE_;
 vector<float>  phoCalibEt_;
@@ -37,12 +36,14 @@ vector<float>  phoR9_;
 vector<float>  phoTowerHoverE_;
 vector<float>  phoConeHoverE_;
 vector<float>  phoESEffSigmaRR_;
+vector<float>  phoESEffSigmaRRnoZS_;
 vector<float>  phoSigmaIEtaIEtaFull5x5_;
 vector<float>  phoSigmaIEtaIPhiFull5x5_;
 vector<float>  phoSigmaIPhiIPhiFull5x5_;
 vector<float>  phoE2x2Full5x5_;
 vector<float>  phoE5x5Full5x5_;
 vector<float>  phoS4_;
+vector<float>  phoS4noZS_;
 vector<float>  phoR9Full5x5_;
 vector<float>  phoPFChIso_;
 vector<float>  phoPFChPVIso_;
@@ -52,6 +53,9 @@ vector<float>  phoPFChWorstVetoIso_;
 vector<float>  phoPFChWorstIso_;
 vector<float>  phoEcalPFClusterIso_;
 vector<float>  phoHcalPFClusterIso_;
+vector<float>  photrkSumPtHollowConeDR03_;
+vector<float>  photrkSumPtSolidConeDR04_;
+
 //vector<float>  phoSeedBCE_;
 //vector<float>  phoSeedBCEta_;
 vector<float>  phoIDMVA_;
@@ -64,6 +68,7 @@ vector<float>  phoSeedTime_;
 vector<float>  phoSeedEnergy_;
 vector<int>  phoSeediEta_;
 vector<int>  phoSeediPhi_;
+
 vector<vector<float>> phoEnergyMatrix_5x5_;
 vector<vector<float>> phoEnergyMatrix_7x7_;
 vector<vector<float>> phoEnergyMatrix_9x9_;
@@ -108,15 +113,17 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phohasPixelSeed",         &phohasPixelSeed_);
   tree->Branch("phoEleVeto",              &phoEleVeto_);
   tree->Branch("phoR9",                   &phoR9_);
-  tree->Branch("phoTowHoverE",            &phoTowerHoverE_);
+  tree->Branch("phoTowerHoverE",          &phoTowerHoverE_);
   tree->Branch("phoConeHoverE",           &phoConeHoverE_);
   tree->Branch("phoESEffSigmaRR",         &phoESEffSigmaRR_);
+  tree->Branch("phoESEffSigmaRRnoZS",     &phoESEffSigmaRRnoZS_);
   tree->Branch("phoSigmaIEtaIEtaFull5x5", &phoSigmaIEtaIEtaFull5x5_);
   tree->Branch("phoSigmaIEtaIPhiFull5x5", &phoSigmaIEtaIPhiFull5x5_);
   tree->Branch("phoSigmaIPhiIPhiFull5x5", &phoSigmaIPhiIPhiFull5x5_);
   tree->Branch("phoE2x2Full5x5",          &phoE2x2Full5x5_);
   tree->Branch("phoE5x5Full5x5",          &phoE5x5Full5x5_);
   tree->Branch("phoS4",                   &phoS4_);
+  tree->Branch("phoS4noZS",               &phoS4noZS_);
   tree->Branch("phoR9Full5x5",            &phoR9Full5x5_);
   tree->Branch("phoPFChIso",              &phoPFChIso_);
   tree->Branch("phoPFChPVIso",            &phoPFChPVIso_);
@@ -126,6 +133,9 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoPFChWorstVetoIso",     &phoPFChWorstVetoIso_);
   tree->Branch("phoEcalPFClusterIso",     &phoEcalPFClusterIso_);
   tree->Branch("phoHcalPFClusterIso",     &phoHcalPFClusterIso_);
+  tree->Branch("photrkSumPtHollowConeDR03", &photrkSumPtHollowConeDR03_);
+  tree->Branch("photrkSumPtSolidConeDR04", &photrkSumPtSolidConeDR04_);
+
   if(dumpCrystalinfo_){
   tree->Branch("phoSeedTime",             &phoSeedTime_);
   tree->Branch("phoSeedEnergy",           &phoSeedEnergy_);
@@ -145,7 +155,6 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
 //
 // ------------ method called for each event  ------------
 void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-
 
   //////////////////////////////Cleaning of previous event/////////////////////////////////////////
   phoE_                   .clear();
@@ -170,14 +179,16 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
   phoEleVeto_             .clear();
   phoR9_                  .clear();
   phoTowerHoverE_         .clear();
-  phoConeHoverE_          .clear();
+  phoConeHoverE_          .clear();  
   phoESEffSigmaRR_        .clear();
+  phoESEffSigmaRRnoZS_    .clear();
   phoSigmaIEtaIEtaFull5x5_.clear();
   phoSigmaIEtaIPhiFull5x5_.clear();
   phoSigmaIPhiIPhiFull5x5_.clear();
   phoE2x2Full5x5_         .clear();
   phoE5x5Full5x5_         .clear();
   phoS4_                  .clear();
+  phoS4noZS_              .clear();
   phoR9Full5x5_           .clear();
   phoPFChIso_             .clear();
   phoPFChPVIso_           .clear();
@@ -187,6 +198,9 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
   phoPFChWorstIso_        .clear();
   phoEcalPFClusterIso_    .clear();
   phoHcalPFClusterIso_    .clear();
+  photrkSumPtHollowConeDR03_ .clear();
+  photrkSumPtSolidConeDR04_ .clear();
+
   phoSeedTime_            .clear();
   phoSeedEnergy_          .clear();
   phoSeediEta_            .clear();
@@ -214,7 +228,6 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
   Handle<EcalRecHitCollection> pEERecHits;
   iEvent.getByToken(eeReducedRecHitCollection_, pEERecHits);
 
-
   if (!photonHandle.isValid()) {
     edm::LogWarning("ggNtuplizer") << "no pat::Photons in event";
     return;
@@ -235,9 +248,12 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
     if (genParticlesHandle.isValid()) {
       for (std::vector<reco::GenParticle>::const_iterator ip = genParticlesHandle->begin(); ip != genParticlesHandle->end(); ++ip) {
 	const reco::Candidate *p = (const reco::Candidate*)&(*ip);
-	//if ( (p->status()==1) && abs(p->pdgId()) == 22 )
-	if((ip->fromHardProcessFinalState()) && (ip->isPromptFinalState()) && (p->pdgId()) == 22) {
-	    if ( ((reco::deltaR(*iPho,*p))<0.1) && ((iPho->pt()/p->pt())>0.7) && ((iPho->pt()/p->pt())<1.2) ) genmatched=1;
+	//if ( (p->status()==1) && abs(p->pdgId()) == 22 ) 
+	if((ip->fromHardProcessFinalState()) && (ip->isPromptFinalState()) && (p->pdgId()) == 22)  {
+	  //if ( ((reco::deltaR(*iPho,*p))<0.1) ) genmatched=1;
+	  //genmatched=1;
+	  if ( ((reco::deltaR(*iPho,*p))<0.1) && ((iPho->pt()/p->pt())>0.7) && ((iPho->pt()/p->pt())<1.2) ) genmatched=1;
+          //else genmatched=0;
 	}  
       }
     }
@@ -269,12 +285,14 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
     phoTowerHoverE_     .push_back(iPho->hadTowOverEm());
     phoConeHoverE_      .push_back(iPho->hcalOverEcal());
     phoESEffSigmaRR_    .push_back(lazyTool.eseffsirir(*((*iPho).superCluster())));
+    phoESEffSigmaRRnoZS_    .push_back(lazyToolnoZS.eseffsirir(*((*iPho).superCluster())));
     phoSigmaIEtaIEtaFull5x5_ .push_back(iPho->full5x5_sigmaIetaIeta());
     phoSigmaIEtaIPhiFull5x5_ .push_back(iPho->full5x5_showerShapeVariables().sigmaIetaIphi);
     phoSigmaIPhiIPhiFull5x5_ .push_back(iPho->full5x5_showerShapeVariables().sigmaIphiIphi);
     phoE2x2Full5x5_          .push_back(lazyToolnoZS.e2x2(*((*iPho).superCluster()->seed())));
     phoE5x5Full5x5_          .push_back(iPho->full5x5_e5x5());
     phoS4_                   .push_back(lazyToolnoZS.e2x2(*((*iPho).superCluster()->seed()))/(iPho->full5x5_e5x5()));
+    phoS4noZS_  .push_back(lazyToolnoZS.e2x2(*((*iPho).superCluster()->seed()))/lazyToolnoZS.e5x5(*((*iPho).superCluster()->seed())));
     phoR9Full5x5_            .push_back(iPho->full5x5_r9());    
     phoPFChIso_         .push_back(iPho->chargedHadronIso()); //charged hadron isolation with dxy,dz match to pv
     phoPFChPVIso_       .push_back(iPho->chargedHadronPFPVIso()); //only considers particles assigned to the primary vertex (PV) by particle flow, corresponds to <10_6 chargedHadronIso
@@ -284,6 +302,8 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
     phoPFChWorstVetoIso_.push_back(iPho->chargedHadronWorstVtxGeomVetoIso()); //as chargedHadronWorstVtxIso but an additional geometry based veto cone
     phoEcalPFClusterIso_.push_back(iPho->ecalPFClusterIso());
     phoHcalPFClusterIso_.push_back(iPho->hcalPFClusterIso());
+    photrkSumPtHollowConeDR03_.push_back(iPho->trkSumPtHollowConeDR03());
+    photrkSumPtSolidConeDR04_.push_back(iPho->trkSumPtSolidConeDR04());
 
     ///////////////////////////////////////////////////////////////////////
     //const auto &seedSC = *(iPho->superCluster()->seed());
@@ -304,8 +324,7 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
       if(dumpCrystalinfo_){ 
       phoSeedTime_  .push_back((*theSeedHit).time());
       phoSeedEnergy_.push_back((*theSeedHit).energy());}
-      
-      
+            
       if (isBarrel) {
 	EBDetId det = theSeedHit->id();
         if(dumpCrystalinfo_){
@@ -326,16 +345,14 @@ void ggNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& i
       phoSeediEta_  .push_back(-999);
       phoSeediPhi_  .push_back(-999);}
     }
-    
-    
+        
     if(dumpCrystalinfo_){
     phoEnergyMatrix_5x5_.push_back(lazyToolnoZS.energyMatrix(seedCluster,2));
     phoEnergyMatrix_7x7_.push_back(lazyToolnoZS.energyMatrix(seedCluster,3));
     phoEnergyMatrix_9x9_.push_back(lazyToolnoZS.energyMatrix(seedCluster,4));
     phoEnergyMatrix_11x11_.push_back(lazyToolnoZS.energyMatrix(seedCluster,5));
     phoEnergyMatrix_15x15_.push_back(lazyToolnoZS.energyMatrix(seedCluster,7));
-    phoEnergyMatrix_25x25_.push_back(lazyToolnoZS.energyMatrix(seedCluster, 12));}
-    
+    phoEnergyMatrix_25x25_.push_back(lazyToolnoZS.energyMatrix(seedCluster, 12));}    
     
     nPho_++;
   }
